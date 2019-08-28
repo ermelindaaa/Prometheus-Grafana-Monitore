@@ -26,11 +26,11 @@ node{
                 sh './get_helm.sh'
             }
             stage("Create the Tiller Service Account"){
-                sh 'kubectl apply -f https://raw.githubusercontent.com/islajd/kubernetes-prometheus-grafana/master/helm/service-account.yml'
+                sh 'kubectl apply -f https://raw.githubusercontent.com/Grisilda/kubernetes-prometheus-grafana/master/helm/service-account.yml'
                 sh 'kubectl get serviceaccounts -n kube-system'
             }
             stage("Create the service account role binding"){
-                sh 'kubectl apply -f https://raw.githubusercontent.com/islajd/kubernetes-prometheus-grafana/master/helm/role-binding.yml'
+                sh 'kubectl apply -f https://raw.githubusercontent.com/Grisilda/kubernetes-prometheus-grafana/master/helm/role-binding.yml'
                 sh 'kubectl get clusterrolebindings.rbac.authorization.k8s.io'
             }
             stage("Deploy Tiller"){
@@ -38,7 +38,7 @@ node{
                 sh 'kubectl get pods -n kube-system'
             }
             stage("Create namespace"){
-                sh 'kubectl apply -f https://raw.githubusercontent.com/islajd/kubernetes-prometheus-grafana/master/monitoring/namespace.yml'
+                sh 'kubectl apply -f https://raw.githubusercontent.com/Grisilda/kubernetes-prometheus-grafana/master/monitoring/namespace.yml'
                 sh 'kubectl get namespaces'
             }
             stage ("Deploy Prometheus"){
@@ -47,7 +47,7 @@ node{
                 sh 'kubectl get pods -n monitoring'
             }
             stage("Defining the grafana data sources"){
-                sh 'kubectl apply -f https://raw.githubusercontent.com/islajd/kubernetes-prometheus-grafana/master/monitoring/grafana/config.yml'
+                sh 'kubectl apply -f https://raw.githubusercontent.com/Grisilda/kubernetes-prometheus-grafana/master/monitoring/grafana/config.yml'
                 sh 'kubectl get configmaps -n monitoring'
             }
             stage("Deploy Grafana"){
