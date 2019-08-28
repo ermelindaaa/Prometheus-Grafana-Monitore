@@ -1,7 +1,7 @@
 def remote = [:]
 remote.name = "ubuntu"
 remote.allowAnyHosts = true
-remote.host = "18.184.5.205"
+remote.host = "18.184.129.252"
 def ID
 def IP
 node{
