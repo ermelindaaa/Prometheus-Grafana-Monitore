@@ -1,7 +1,7 @@
 def remote = [:]
 remote.name = "ubuntu"
 remote.allowAnyHosts = true
-remote.host = "18.184.129.252"
+remote.host = "35.159.24.124"
 def ID
 def IP
 node{
@@ -26,19 +26,24 @@ node{
                 sh './get_helm.sh'
             }
             stage("Create the Tiller Service Account"){
-                sh 'kubectl apply -f https://raw.githubusercontent.com/ermelindaaa/testAutomation-1/master/helm/service-account.yml'
+                sh 'kubectl apply -f https://raw.githubusercontent.com/islajd/kubernetes-prometheus-grafana/master/helm/service-account.yml'
                 sh 'kubectl get serviceaccounts -n kube-system'
             }
             stage("Create the service account role binding"){
-                sh 'kubectl apply -f https://raw.githubusercontent.com/ermelindaaa/testAutomation-1/master/helm/role-binding.yml'
+                sh 'kubectl apply -f https://raw.githubusercontent.com/islajd/kubernetes-prometheus-grafana/master/helm/role-binding.yml'
                 sh 'kubectl get clusterrolebindings.rbac.authorization.k8s.io'
             }
             stage("Deploy Tiller"){
                 sh 'helm init --service-account tiller --wait'
                 sh 'kubectl get pods -n kube-system'
             }
+            stage ("Waiting function"){
+                  sh 'kubectl -n kube-system get pods'
+                  sh 'sleep 30'
+            }
+
             stage("Create namespace"){
-                sh 'kubectl apply -f https://raw.githubusercontent.com/ermelindaaa/testAutomation-1/master/monitoring/namespace.yml'
+                sh 'kubectl apply -f https://raw.githubusercontent.com/islajd/kubernetes-prometheus-grafana/master/monitoring/namespace.yml'
                 sh 'kubectl get namespaces'
             }
             stage ("Deploy Prometheus"){
@@ -47,7 +52,7 @@ node{
                 sh 'kubectl get pods -n monitoring'
             }
             stage("Defining the grafana data sources"){
-                sh 'kubectl apply -f https://raw.githubusercontent.com/ermelindaaa/testAutomation-1/master/monitoring/grafana/config.yml'
+                sh 'kubectl apply -f https://raw.githubusercontent.com/islajd/kubernetes-prometheus-grafana/master/monitoring/grafana/config.yml'
                 sh 'kubectl get configmaps -n monitoring'
             }
             stage("Deploy Grafana"){
